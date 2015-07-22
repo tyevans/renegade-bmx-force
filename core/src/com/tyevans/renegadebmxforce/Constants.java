@@ -11,10 +11,10 @@ public class Constants {
 
     public static final float GROUND_X = 0;
     public static final float GROUND_Y = 0;
-    public static final float GROUND_WIDTH = 50f;
-    public static final float GROUND_HEIGHT = 2f;
     public static final float GROUND_DENSITY = 0f;
 
     public static final int NUM_GROUND_VERTICES = APP_WIDTH;
-    public static final int COURSE_MAX_LENGTH = APP_WIDTH*40;
+    public static final int COURSE_MAX_LENGTH = APP_WIDTH * 100;
+
+    public static final float PPM = 100f;
 }

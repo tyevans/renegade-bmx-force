@@ -17,7 +17,7 @@ public class GameStage extends Stage {
     private World world;
     private Ground ground;
 
-    private final float TIME_STEP = 1 / 300f;
+    private final float TIME_STEP = 1 / 60f;
     private float accumulator = 0f;
 
     private OrthographicCamera camera;
@@ -36,7 +36,7 @@ public class GameStage extends Stage {
     }
 
     private void setupCamera() {
-        camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera = new OrthographicCamera(Gdx.graphics.getWidth() / Constants.PPM, Gdx.graphics.getHeight() / Constants.PPM);
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0f);
         camera.update();
     }
@@ -53,19 +53,15 @@ public class GameStage extends Stage {
             accumulator -= TIME_STEP;
         }
 
-        Vector2 vel = this.player.body.getLinearVelocity();
-        Vector2 pos = this.player.body.getPosition();
+        Vector2 vel = player.body.getLinearVelocity();
+        Vector2 pos = player.body.getPosition();
 
         if (Gdx.input.isKeyPressed(Input.Keys.A) && vel.x > -100) {
-            player.body.applyTorque(100000f, true);
+            player.body.applyTorque(0.1f, true);
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.D) && vel.x < 100) {
-            player.body.applyTorque(-1000000f, true);
-        }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.W) && vel.y < 10000) {
-            player.body.applyLinearImpulse(0, 1000f, pos.x, pos.y, true);
+            player.body.applyTorque(-0.1f, true);
         }
 
     }

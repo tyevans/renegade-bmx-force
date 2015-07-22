@@ -17,18 +17,19 @@ public class Player extends Sprite {
     public Player(World world) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(100, 500);
+        bodyDef.position.set(100 / Constants.PPM, 500 / Constants.PPM);
+        bodyDef.linearDamping = 0.2f;
 
         body = world.createBody(bodyDef);
         texture = new Texture("./bike.png");
 
         CircleShape circle = new CircleShape();
-        circle.setRadius(20f);
+        circle.setRadius(20f / Constants.PPM);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = circle;
-        fixtureDef.density = 0.5f;
-        fixtureDef.friction = 1f;
+        fixtureDef.density = 1f;
+        fixtureDef.friction = 0.5f;
         fixtureDef.restitution = 0.1f; // Make it bounce a little bit
 
         Fixture fixture = body.createFixture(fixtureDef);

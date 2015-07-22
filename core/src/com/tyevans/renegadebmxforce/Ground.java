@@ -1,6 +1,7 @@
 package com.tyevans.renegadebmxforce;
 
         import com.badlogic.gdx.Gdx;
+        import com.badlogic.gdx.graphics.g2d.Batch;
         import com.badlogic.gdx.graphics.g2d.Sprite;
         import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
         import com.badlogic.gdx.math.Vector2;
@@ -17,7 +18,7 @@ public class Ground extends Sprite {
         int segmentLength = Constants.COURSE_MAX_LENGTH / Constants.NUM_GROUND_VERTICES;
         terrainVertices = new Vector2[Constants.NUM_GROUND_VERTICES];
         for (int i=0; i<Constants.NUM_GROUND_VERTICES; i++) {
-            terrainVertices[i] = new Vector2((float) (i * segmentLength), (float) (randomGenerator.nextInt(5000) + 31000) / 100f);
+            terrainVertices[i] = new Vector2((float) (i * segmentLength) / Constants.PPM, (randomGenerator.nextInt(5000) / 100f) / Constants.PPM);
         }
     }
 
@@ -30,5 +31,10 @@ public class Ground extends Sprite {
         shape.createChain(terrainVertices);
         body.createFixture(shape, Constants.GROUND_DENSITY);
         shape.dispose();
+    }
+
+    @Override
+    public void draw(Batch batch) {
+
     }
 }
