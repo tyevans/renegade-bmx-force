@@ -16,10 +16,12 @@ public class Ground extends Sprite {
     private void generateVertices() {
         Random randomGenerator = new Random();
         int segmentLength = Constants.COURSE_MAX_LENGTH / Constants.NUM_GROUND_VERTICES;
-        terrainVertices = new Vector2[Constants.NUM_GROUND_VERTICES];
+        terrainVertices = new Vector2[Constants.NUM_GROUND_VERTICES+2];
+        terrainVertices[0] = new Vector2(0, 10);
         for (int i=0; i<Constants.NUM_GROUND_VERTICES; i++) {
-            terrainVertices[i] = new Vector2((float) (i * segmentLength) / Constants.PPM, (randomGenerator.nextInt(5000) / 100f) / Constants.PPM);
+            terrainVertices[i+1] = new Vector2((float) (i * segmentLength) / Constants.PPM, (randomGenerator.nextInt(5000) / 100f) / Constants.PPM);
         }
+        terrainVertices[Constants.NUM_GROUND_VERTICES+1] = new Vector2(Constants.COURSE_MAX_LENGTH / Constants.PPM, 10);
     }
 
     public Ground(World world) {
