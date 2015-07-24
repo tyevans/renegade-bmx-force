@@ -4,13 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.tyevans.renegadebmxforce.WorldUtils;
 
 public class GameStage extends Stage {
 
@@ -24,6 +21,7 @@ public class GameStage extends Stage {
     private Box2DDebugRenderer renderer;
     private SpriteBatch batch;
     private Player player;
+    private boolean jumping = false;
 
     public GameStage() {
         world = WorldUtils.createWorld();
@@ -53,16 +51,26 @@ public class GameStage extends Stage {
             accumulator -= TIME_STEP;
         }
 
-        Vector2 vel = player.body.getLinearVelocity();
-        Vector2 pos = player.body.getPosition();
+        Vector2 vel = player.backWheelBody.getLinearVelocity();
+        Vector2 pos = player.backWheelBody.getPosition();
 
         if (Gdx.input.isKeyPressed(Input.Keys.A) && vel.x > -100) {
-            player.body.applyTorque(0.1f, true);
+            player.applyTorque(0.1f, true);
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.D) && vel.x < 100) {
-            player.body.applyTorque(-0.1f, true);
+            player.applyTorque(-0.1f, true);
         }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && vel.x < 100) {
+            if (!jumping) {
+                player.backWheelBody.applyLinearImpulse(0, 0.1f, 20, 20, true);
+                jumping = true;
+            }
+        } else {
+            jumping = false;
+        }
+
 
     }
 
