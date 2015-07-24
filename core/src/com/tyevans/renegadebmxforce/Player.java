@@ -7,8 +7,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.joints.WheelJoint;
 import com.badlogic.gdx.physics.box2d.joints.WheelJointDef;
+import com.sun.org.apache.bcel.internal.classfile.ConstantNameAndType;
 
 public class Player extends Sprite {
+    public static final int LEFT = 0;
+    public static final int RIGHT = 1;
+
     public Body chassisBody;
     public Body backWheelBody;
     public Body frontWheelBody;
@@ -16,7 +20,7 @@ public class Player extends Sprite {
     public WheelJoint frontWheelJoint;
     public float startingY = 200;
 
-    private Texture texture;
+    private float speed = 50;
 
     public Player(World world) {
         BodyDef bodyDef = new BodyDef();
@@ -54,7 +58,9 @@ public class Player extends Sprite {
         wheelJointDef.localAnchorA.set(new Vector2(-50 / Constants.PPM, -30 / Constants.PPM));
         wheelJointDef.localAnchorB.set(new Vector2(0, 0));
         wheelJointDef.localAxisA.set(Vector2.Y);
+        wheelJointDef.maxMotorTorque = 0.2f;
         wheelJointDef.frequencyHz = 3f;
+        wheelJointDef.dampingRatio = 0.9f;
         wheelJointDef.motorSpeed = 20 / Constants.PPM;
         backWheelJoint = (WheelJoint) world.createJoint(wheelJointDef);
 
@@ -74,8 +80,24 @@ public class Player extends Sprite {
     }
 
 
-    public void applyTorque(float v, boolean b) {
-        backWheelBody.applyTorque(v, b);
-        frontWheelBody.applyTorque(v, b);
+    public void move(int direction) {
+        if (direction == LEFT) {
+            backWheelJoint.setMotorSpeed(speed);
+            frontWheelJoint.setMotorSpeed(speed);
+        } else if (direction == RIGHT) {
+            backWheelJoint.setMotorSpeed(-speed);
+            frontWheelJoint.setMotorSpeed(-speed);
+        }
+        backWheelJoint.enableMotor(true);
+        frontWheelJoint.enableMotor(true);
+    }
+
+    public void stop() {
+        backWheelJoint.enableMotor(false);
+        frontWheelJoint.enableMotor(false);
+    }
+
+    public void rotateChassis(float torque) {
+        chassisBody.applyTorque(torque, true);
     }
 }

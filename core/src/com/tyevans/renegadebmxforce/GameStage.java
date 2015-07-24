@@ -21,7 +21,6 @@ public class GameStage extends Stage {
     private Box2DDebugRenderer renderer;
     private SpriteBatch batch;
     private Player player;
-    private boolean jumping = false;
 
     public GameStage() {
         world = WorldUtils.createWorld();
@@ -51,27 +50,19 @@ public class GameStage extends Stage {
             accumulator -= TIME_STEP;
         }
 
-        Vector2 vel = player.backWheelBody.getLinearVelocity();
-        Vector2 pos = player.backWheelBody.getPosition();
-
-        if (Gdx.input.isKeyPressed(Input.Keys.A) && vel.x > -100) {
-            player.applyTorque(0.1f, true);
-        }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.D) && vel.x < 100) {
-            player.applyTorque(-0.1f, true);
-        }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && vel.x < 100) {
-            if (!jumping) {
-                player.backWheelBody.applyLinearImpulse(0, 0.1f, 20, 20, true);
-                jumping = true;
-            }
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+            player.move(Player.LEFT);
+        } else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+            player.move(Player.RIGHT);
         } else {
-            jumping = false;
+            player.stop();
         }
 
-
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            player.rotateChassis(0.3f);
+        } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            player.rotateChassis(-0.3f);
+        }
     }
 
     @Override
